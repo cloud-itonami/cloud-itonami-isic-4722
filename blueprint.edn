@@ -1,0 +1,13 @@
+[{:itonami.blueprint/id "cloud-itonami-isic-4722"
+  :itonami.blueprint/name "Retail Sale of Beverages in Specialized Stores"
+  :itonami.blueprint/isic-rev4 "4722"
+  :itonami.blueprint/domain :retail/specialized-beverage-stores
+  :itonami.blueprint/license "AGPL-3.0-or-later"
+  :itonami.blueprint/social-impact [:responsible-alcohol-service :age-verification-integrity :local-economy]
+  :itonami.blueprint/governor :beverage-retail-governor
+  :itonami.blueprint/robotics true
+  :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger :retail]
+  :itonami.blueprint/optional-technologies []
+  :itonami.blueprint/status :public-oss
+  :itonami.blueprint/maturity :implemented
+  :db/id -1}]
