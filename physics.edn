@@ -1,0 +1,33 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README: a coordination actor for specialized beverage stores (liquor,
+;; wine and craft-beer shops; ISIC 4722); in-store physical work is done by
+;; robots under kotoba-lang/robotics. The physical work: an arm lifting
+;; bottle cases from the delivery pallet onto the back-room rack, and
+;; chilling warm stock in the walk-in cooler before it goes on sale.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-4722"
+ :cases
+ [{:id :lift-bottle-case-to-rack
+   :kind :manipulator
+   :procedure "back-room arm lifts a case of bottles off the delivery pallet onto the storage rack"
+   :params {:l1-m 0.70 :l2-m 0.60 :m1-kg 12.0 :m2-kg 8.0
+            :from [0.80 0.10] :to [0.40 0.90] :duration-s 2.5 :steps 500}
+   :sweep {:param :payload-kg :values [6.0 10.0 16.0 20.0 30.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 300.0 :basis "estimate: continuous shoulder torque of a ~20 kg-payload arm with a 1.3 m reach"}
+   :boundary {:lo 1.0 :hi 80.0}}
+  {:id :chill-cans-in-walk-in
+   :kind :thermal
+   :procedure "a 330 ml can delivered warm (22 C) chills in the 3 C walk-in cooler until its centre reaches 7 C; the can's 33 mm radius is the half-thickness and the air-side heat-transfer coefficient (still air to fan-forced) is swept"
+   :params {:thickness-m 0.033 :conductivity-w-mk 0.60 :density-kg-m3 1010.0 :specific-heat-j-kgk 3900.0
+            :t0-c 22.0 :t-hot-c 3.0 :t-back-ambient-c 3.0 :h-back-w-m2k 0.0
+            :threshold-c 7.0 :threshold-direction :falling :duration-s 86400.0 :nodes 11}
+   :sweep {:param :h-front-w-m2k :values [5.0 10.0 15.0 25.0 40.0]}
+   :quantity :time-to-threshold-s
+   :limit {:max 14400.0 :basis "estimate: stock received in the morning must be cold for the afternoon trade (4 h); conduction-only slab: natural convection inside the liquid is not modelled, so the real can chills faster"}
+   :boundary {:lo 2.0 :hi 100.0}}]}
