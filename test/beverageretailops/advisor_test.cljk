@@ -1,6 +1,6 @@
 (ns beverageretailops.advisor-test
   "Unit tests of `beverageretailops.advisor` proposal generation."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [beverageretailops.advisor :as adv]
             [beverageretailops.store :as store]))
 
